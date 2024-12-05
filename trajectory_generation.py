@@ -9,6 +9,7 @@ import tf
 from std_msgs.msg import Empty
 from nav_msgs.msg import Odometry
 from geometry_msgs.msg import Twist, Pose2D
+from motion_planning import get_path_from_A_star
 
 class Controller:
     def __init__(self, P=0.0, D=0.0, set_point=0):
@@ -69,9 +70,10 @@ class Turtlebot():
 
 
     def run(self):
-        waypoints = [[0.5, 0], [0.5, -0.5], [1, -0.5], [1, 0], [1, 0.5],\
-                      [1.5, 0.5], [1.5, 0], [1.5, -0.5], [1, -0.5], [1, 0],\
-                      [1, 0.5], [0.5, 0.5], [0.5, 0], [0, 0], [0, 0]]
+        start = [0,2]
+        goal = [9,2]
+        obstacles = [[2,1],[2,2],[5,2],[5,3]]
+        waypoints = get_path_from_A_star(start, goal, obstacles)
         for i in range(len(waypoints)-1):
             self.move_to_point(waypoints[i], waypoints[i+1])
 
